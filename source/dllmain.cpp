@@ -10,9 +10,11 @@ import settings;
 import skipintro;
 import fov;
 import displaymode;
+import internalres;
 import vsync;
 import maxfps;
 import aniso;
+import gameplay;
 import hudfixes;
 import updatecheck;
 

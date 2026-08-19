@@ -14,10 +14,16 @@ The latest version of [Sniper: Ghost Warrior Fusion Fix](https://github.com/TGP4
 ### Display
 - **DisplayMode** - Sets the display mode: (0) fullscreen, (1) windowed.
 - **VSync** = 1 - enabled or disables Vsync: (0) off, (1) on.
-- **MaxFrameRate** - Frame rate cap: (0) uncapped, (1) the rate the display is running at, range: 10 - 1000
+- **Internal Resolution** - Added the option to set the internal resolution without it affecting the window resolution, useful for supersampling and downscaling.
+- **Scaling Filter** -  Sets the internal resolution scaling filter.
+- **Max Frame Rate** - Frame rate cap: (0) uncapped, (1) the rate the display is running at.
 
 ### Graphics
 - **Anisotropic Filtering** - Forces the selected AF level, range: 2 to 16.
+
+### Gameplay
+- No Detection Indicator - Removes the detection indicator.
+- No Waypoint Marker - Removes the world markers pointing at objectives.
 
 ### Field of View
 - **Field of View** - The player camera's horizontal FOV in degrees, range: 45 to 140. Does not affect scopes or cutscenes.
