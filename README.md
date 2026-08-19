@@ -1,4 +1,6 @@
 # Sniper: Ghost Warrior Fusion Fix
+<img width="5533" height="1687" alt="image (3)" src="https://github.com/user-attachments/assets/58ff21d4-be3a-4d95-a96e-412388c429e2" />
+
 
 ## Installation
 The latest version of [Sniper: Ghost Warrior Fusion Fix](https://github.com/TGP482/SniperGhostWarrior.FusionFix/releases) can be found in the Releases page.
