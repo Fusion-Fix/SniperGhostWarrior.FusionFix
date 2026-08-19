@@ -12,8 +12,8 @@ The latest version of [Sniper: Ghost Warrior Fusion Fix](https://github.com/TGP4
 ## Features
 
 ### Display
-- **DisplayMode** - Sets the display mode: (0) fullscreen, (1) windowed.
-- **VSync** = 1 - enabled or disables Vsync: (0) off, (1) on.
+- **Display Mode** - Sets the display mode: (0) fullscreen, (1) windowed.
+- **V-Sync** = 1 - enabled or disables Vsync: (0) off, (1) on.
 - **Internal Resolution** - Added the option to set the internal resolution without it affecting the window resolution, useful for supersampling and downscaling.
 - **Scaling Filter** -  Sets the internal resolution scaling filter.
 - **Max Frame Rate** - Frame rate cap: (0) uncapped, (1) the rate the display is running at.
