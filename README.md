@@ -22,8 +22,8 @@ The latest version of [Sniper: Ghost Warrior Fusion Fix](https://github.com/TGP4
 - **Anisotropic Filtering** - Forces the selected AF level, range: 2 to 16.
 
 ### Gameplay
-- No Detection Indicator - Removes the detection indicator.
-- No Waypoint Marker - Removes the world markers pointing at objectives.
+- **No Detection Indicator** - Removes the detection indicator.
+- **No Waypoint Marker** - Removes the world markers pointing at objectives.
 
 ### Field of View
 - **Field of View** - The player camera's horizontal FOV in degrees, range: 45 to 140. Does not affect scopes or cutscenes.
