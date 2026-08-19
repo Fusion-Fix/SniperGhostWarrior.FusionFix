@@ -22,10 +22,7 @@ public:
         {
             auto pattern = engine_pattern("80 7D 18 00 89 44 24 24 74 07 83 C8 20 89 44 24 24");
             if (pattern.empty())
-            {
-                FusionFixLog::Write("vsync: no pattern matched, nothing patched");
                 return;
-            }
 
             // The branch that skips the flag bit when the setting is off.
             static raw_mem fnForceOn(pattern.get_first(8), { 0x90, 0x90 });

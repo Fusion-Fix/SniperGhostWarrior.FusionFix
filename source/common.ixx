@@ -15,19 +15,31 @@ public:
         using std::function<void(Args...)>::function;
 
     private:
-        std::list<std::function<void(Args...)>> handlers;
+        std::vector<std::pair<int, std::function<void(Args...)>>> handlers;
 
     public:
-        auto operator+=(std::function<void(Args...)>&& handler) -> std::function<void()>
+        // Registration order is static initialisation order across modules, which is not something
+        // a module should rely on, so anything order-sensitive asks for a priority instead.
+        static constexpr auto nDefaultPriority = 100;
+
+        void operator+=(std::function<void(Args...)>&& handler)
         {
-            auto it = handlers.insert(handlers.end(), std::move(handler));
-            return [this, it]() { handlers.erase(it); };
+            add(std::move(handler), nDefaultPriority);
+        }
+
+        // Lower runs first. Equal priorities keep the order they were registered in.
+        void add(std::function<void(Args...)>&& handler, int priority)
+        {
+            handlers.emplace_back(priority, std::move(handler));
         }
 
         void executeAll(Args... args) const
         {
-            for (auto& handler : handlers)
-                handler(args...);
+            auto ordered = handlers;
+            std::stable_sort(ordered.begin(), ordered.end(), [](const auto& left, const auto& right) { return left.first < right.first; });
+
+            for (auto& handler : ordered)
+                handler.second(args...);
         }
     };
 
@@ -37,11 +49,27 @@ public:
         static Event<> InitEvent;
         return InitEvent;
     }
-    // Runs on the main thread before onInitEvent; blocks until every prompt is closed.
+    // Modal prompts that have to be answered before the game is allowed to carry on loading.
+    // Runs on the main thread ahead of onInitEvent, so executeAll does not return until every
+    // prompt is closed.
     static Event<>& onStartupPromptEvent()
     {
         static Event<> StartupPromptEvent;
         return StartupPromptEvent;
+    }
+    // Fires once engine_x86.dll is mapped. The renderer, the window and the video settings live
+    // there.
+    static Event<>& onEngineInitEvent()
+    {
+        static Event<> EngineInitEvent;
+        return EngineInitEvent;
+    }
+    // Fires once GameDLL_x86.dll is mapped. Game logic, cameras, the intro sequence and the menus
+    // live there.
+    static Event<>& onGameDLLInitEvent()
+    {
+        static Event<> GameDLLInitEvent;
+        return GameDLLInitEvent;
     }
     static Event<>& onIniFileChange()
     {
@@ -150,7 +178,8 @@ export inline bool IsModuleUAL(HMODULE mod)
     return GetProcAddress(mod, "IsUltimateASILoader") != NULL;
 }
 
-// So the same binary works as a UAL plugin or self-initializes under any other loader.
+// Walks the call stack for Ultimate ASI Loader, so the same binary works as a UAL plugin or
+// self-initializes under any other loader.
 export bool IsUALPresent()
 {
     for (const auto& entry : std::stacktrace::current())
@@ -252,7 +281,7 @@ public:
     static inline std::once_flag flag;
 };
 
-// One patch body can cover several game versions.
+// Returns the first pattern that resolves, so one patch body covers several game versions.
 export template <size_t count = 1, typename... Args>
 hook::pattern find_pattern(Args... args)
 {

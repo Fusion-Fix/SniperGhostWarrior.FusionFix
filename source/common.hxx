@@ -9,6 +9,7 @@
 #include "injector/assembly.hpp"
 #include "injector/utility.hpp"
 #include "Hooking.Patterns.h"
+#include "safetyhook.hpp"
 #include <algorithm>
 #include <utility>
 #include <cmath>
@@ -17,6 +18,10 @@
 #include <list>
 #include <map>
 #include <array>
+#include <vector>
 #include <future>
 #include <string>
+#include <fstream>
+#include <format>
+#include <chrono>
 #include <filesystem>

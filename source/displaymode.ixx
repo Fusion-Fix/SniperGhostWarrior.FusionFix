@@ -22,10 +22,7 @@ public:
         {
             auto pattern = engine_pattern("80 3D ? ? ? ? 00 C6 87 BB 06 00 00 01 0F 94 C0 88 47 2C 88 47 10");
             if (pattern.empty())
-            {
-                FusionFixLog::Write("displaymode: no pattern matched, nothing patched");
                 return;
-            }
 
             // setz al, replaced with mov al, 1 or mov al, 0 and a pad byte.
             static raw_mem fnFullscreen(pattern.get_first(14), { 0xB0, 0x01, 0x90 });

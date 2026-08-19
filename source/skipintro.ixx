@@ -32,10 +32,7 @@ public:
             uint8_t* pSkipPressAnyKey = keyPattern.empty() ? nullptr : *keyPattern.get_first<uint8_t*>(9);
 
             if (pNoLogos == nullptr && pSkipPressAnyKey == nullptr)
-            {
-                FusionFixLog::Write("skipintro: no pattern matched, nothing patched");
                 return;
-            }
 
             // Whatever the command line already decided, so turning the setting off gives the game
             // back the state it would have had.
@@ -58,9 +55,6 @@ public:
             };
 
             SkipIntroCB();
-
-            FusionFixLog::Write(std::format("skipintro: NoLogos flag {}, PressAnyKey flag {}",
-                static_cast<void*>(pNoLogos), static_cast<void*>(pSkipPressAnyKey)));
 
             // The flags are read at startup, so a change made mid-session lands on the next launch.
             // Written anyway, because the ini is the state the next launch reads.

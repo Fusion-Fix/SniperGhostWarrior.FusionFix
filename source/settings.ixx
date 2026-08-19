@@ -10,6 +10,13 @@ import common;
 
 export enum Pref
 {
+    PREF_SKIPINTRO,
+    PREF_SKIPPRESSANYKEY,
+    PREF_DISPLAYMODE,
+    PREF_VSYNC,
+    PREF_ANISOTROPICFILTERING,
+    PREF_FIELDOFVIEW,
+
     COUNT,
 };
 
@@ -22,6 +29,21 @@ public:
     static inline void ReadIniSettings()
     {
         CIniReader iniReader("");
+
+        mPrefs[PREF_SKIPINTRO] = std::clamp(iniReader.ReadInteger("General", "SkipIntro", 1), 0, 1);
+        mPrefs[PREF_SKIPPRESSANYKEY] = std::clamp(iniReader.ReadInteger("General", "SkipPressAnyKey", 1), 0, 1);
+
+        mPrefs[PREF_DISPLAYMODE] = std::clamp(iniReader.ReadInteger("Display", "DisplayMode", 0), 0, 2);
+
+        mPrefs[PREF_VSYNC] = std::clamp(iniReader.ReadInteger("Display", "VSync", 0), 0, 2);
+
+
+        auto nAnisotropicFiltering = std::clamp(iniReader.ReadInteger("Graphics", "AnisotropicFiltering", 16), 0, 16);
+        if (nAnisotropicFiltering == 1)
+            nAnisotropicFiltering = 0;
+        mPrefs[PREF_ANISOTROPICFILTERING] = nAnisotropicFiltering;
+
+        mPrefs[PREF_FIELDOFVIEW] = std::clamp(iniReader.ReadFloat("FieldOfView", "FieldOfView", 91.35f), 45.0f, 140.0f);
 
         static std::once_flag flag;
         std::call_once(flag, [&]()
