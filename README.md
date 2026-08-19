@@ -22,6 +22,38 @@ The latest version of [Sniper: Ghost Warrior Fusion Fix](https://github.com/TGP4
 ### Field of View
 - **Field of View** - Adjusts the player camera's field of view, from 45 to 140 degrees.
 
+<div align="center">
+  <table>
+    <tr>
+      <td width="50%"><img style="width:100%" src="https://github.com/user-attachments/assets/f0f76ba2-113d-4778-81b0-5da9820fde7b"></td>
+      <td width="50%"><img style="width:100%" src="https://github.com/user-attachments/assets/150c12ad-c96f-4ea2-9e6b-fe02202cab31"></td>
+    </tr>
+    <tr>
+      <td align="center">Before</td>
+      <td align="center">After</td>
+    </tr>
+  </table>
+</div>
+
 ### General
 - **Skip Intro** - Skips the publisher logo, the intro movie and the "press start" screen, booting straight to the main menu.
 - **Skip Press Any Key** - Skips the "press any key" prompt.
+
+### Fixes
+- Fixed an issue where HUD elements wouldn't scale properly at higher resolutions
+
+<div align="center">
+  <table>
+    <tr>
+      <td width="50%"><img style="width:100%" src="https://github.com/user-attachments/assets/0140bf7f-ca69-4c3c-b5b6-38d9f34cd861"></td>
+      <td width="50%"><img style="width:100%" src="https://github.com/user-attachments/assets/f0f7bd65-29ed-4af8-85b0-abee20a95435"></td>
+    </tr>
+    <tr>
+      <td align="center">Before</td>
+      <td align="center">After</td>
+    </tr>
+  </table>
+</div>
+
+
+
