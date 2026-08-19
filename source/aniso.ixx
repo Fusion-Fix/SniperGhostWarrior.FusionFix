@@ -8,20 +8,6 @@ import common;
 import chrome;
 import settings;
 
-// Filtering in this engine is per material, not per quality preset. Every .mat starts at trilinear
-// with a maximum anisotropy of 1, and the Filtering() line in Video.scr is parsed, stored and then
-// never read again, so the option in the game's own menu does nothing. That leaves the samplers
-// themselves as the only place worth touching.
-//
-// One function programs every sampler the renderer binds, pushing the filters and the anisotropy
-// out of a small descriptor block one D3D9 state at a time. Editing the value on its way into
-// SetSamplerState covers all of them at once and survives material reloads, because nothing is
-// written back into the material.
-//
-// Samplers that do not filter across mip levels, and samplers deliberately asking for point
-// sampling, are left alone: anisotropy is a minification filter and forcing it on a point sampler
-// only costs bandwidth. The magnification filter is left alone for the same reason.
-
 static constexpr uint32_t nFilterNone = 0;
 static constexpr uint32_t nFilterPoint = 1;
 static constexpr uint32_t nFilterLinear = 2;
@@ -67,10 +53,7 @@ public:
             auto mipPattern = engine_pattern("8B 57 08 A1 ? ? ? ? 8B 08 52 6A 07 56 50 8B 81 14 01 00 00 FF D0");
 
             if (minPattern.empty() || maxPattern.empty())
-            {
-                FusionFixLog::Write("aniso: no pattern matched, nothing patched");
                 return;
-            }
 
             static auto AnisotropicFilteringCB = []()
             {
@@ -104,9 +87,6 @@ public:
                 });
             }
             else
-            {
-                FusionFixLog::Write("aniso: mip filter site not found, mip filtering left as the game set it");
-            }
 
             // The samplers are programmed from the descriptor on every bind, so a change lands
             // within a frame or two rather than on the next launch.

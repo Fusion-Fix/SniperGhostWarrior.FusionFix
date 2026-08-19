@@ -7,42 +7,6 @@ export module hudfixes;
 import common;
 import chrome;
 
-// The HUD and every menu are authored on a 1280x720 canvas, and two separate things go wrong on the
-// way from that canvas to the display.
-//
-// The first is size. When the resolution changes the engine walks the widget tree multiplying each
-// element by the new ratio, and it asks two questions of every element before doing so, both
-// authored per widget in the .xui: KeepWidthOnResolutionChange and KeepHeightOnResolutionChange. A
-// widget with those set keeps the pixel size it was drawn at and the walk moves on. This game sets
-// them across its HUD, so at 3840x2160 the health bar is 185 pixels wide where the ratio of three
-// should have made it 555. The interface is not failing to scale; it was authored asking not to be
-// scaled, for a television it was going to be the right size on.
-//
-// Position is exempted by the same mechanism, through KeepPosXOnResolutionChange and its Y
-// counterpart, and the two have to be answered together. Freeing size alone is worse than the
-// original: the bar grows to its proper length while the number beside it stays at the coordinate
-// 1280x720 gave it, so they overlap, and the ammunition count sits in the middle of the screen
-// instead of in the corner.
-//
-// All four are honoured in one place, the property parser that reads the attributes out of the .xui
-// and sets the bits. Blanking the four instructions that set them means no element in any .xui ever
-// carries them, so the walk moves everything and no part of a row can disagree with another because
-// none of them is exempt. It runs before a single screen is parsed, so nothing has to be undone
-// afterwards. The OnParentSizeChange attributes are a different question and are left as authored.
-//
-// The second is shape. The per frame screen scale is computed one axis at a time:
-//
-//     scaleX = screenWidth  / 1280
-//     scaleY = screenHeight /  720
-//
-// with no comparison between the two and no offset, so at 16:9 both agree and the result is right,
-// and at any other shape the whole interface is stretched along one axis: about a ninth at 16:10, a
-// third at 21:9, a third the other way at 4:3. The engine already contains a correct uniform fit in
-// IGame::GetScreenResolutionScale, which the layout path simply never calls. Here it takes the
-// smaller of the two for both axes and puts back the centring a uniform scale needs, the same read
-// modify write on the screen's position that the engine's own safe area inset performs a few
-// instructions later, through the same virtual.
-
 static constexpr ptrdiff_t nGameScreenWidth = 0x70;
 static constexpr ptrdiff_t nGameScreenHeight = 0x74;
 
