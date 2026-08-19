@@ -130,4 +130,4 @@ workspace "SniperGhostWarrior.FusionFix"
       optimize "On"
 
 project "SniperGhostWarrior.FusionFix"
-   setpaths("C:/Program Files (x86)/Steam/steamapps/common/Sniper Ghost Warrior/", "SniperGhostWarrior.exe", "plugins/")
+   setpaths("C:/Program Files (x86)/Steam/steamapps/common/Sniper Ghost Warrior/", "Sniper_x86.exe", "plugins/")
