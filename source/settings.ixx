@@ -14,6 +14,7 @@ export enum Pref
     PREF_SKIPPRESSANYKEY,
     PREF_DISPLAYMODE,
     PREF_VSYNC,
+    PREF_MAXFRAMERATE,
     PREF_ANISOTROPICFILTERING,
     PREF_FIELDOFVIEW,
 
@@ -33,9 +34,11 @@ public:
         mPrefs[PREF_SKIPINTRO] = std::clamp(iniReader.ReadInteger("General", "SkipIntro", 1), 0, 1);
         mPrefs[PREF_SKIPPRESSANYKEY] = std::clamp(iniReader.ReadInteger("General", "SkipPressAnyKey", 1), 0, 1);
 
-        mPrefs[PREF_DISPLAYMODE] = std::clamp(iniReader.ReadInteger("Display", "DisplayMode", 0), 0, 2);
+        mPrefs[PREF_DISPLAYMODE] = std::clamp(iniReader.ReadInteger("Display", "DisplayMode", 0), 0, 1);
 
-        mPrefs[PREF_VSYNC] = std::clamp(iniReader.ReadInteger("Display", "VSync", 0), 0, 2);
+        mPrefs[PREF_VSYNC] = std::clamp(iniReader.ReadInteger("Display", "VSync", 0), 0, 1);
+
+        mPrefs[PREF_MAXFRAMERATE] = std::clamp(iniReader.ReadInteger("Display", "MaxFrameRate", 0), 0, 1000);
 
 
         auto nAnisotropicFiltering = std::clamp(iniReader.ReadInteger("Graphics", "AnisotropicFiltering", 16), 0, 16);

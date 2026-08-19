@@ -12,15 +12,15 @@ The latest version of [Sniper: Ghost Warrior Fusion Fix](https://github.com/TGP4
 ## Features
 
 ### Display
-- **Display Mode** - Chooses between Fullscreen and Windowed modes.
-- **V-Sync** - Turns vertical sync on or off.
-- **HUD Aspect Ratio** - Scales the interface correctly on displays that are not 16:9.
+- **DisplayMode** - Sets the display mode: (0) fullscreen, (1) windowed.
+- **VSync** = 1 - enabled or disables Vsync: (0) off, (1) on.
+- **MaxFrameRate** - Frame rate cap: (0) uncapped, (1) the rate the display is running at, range: 10 - 1000
 
 ### Graphics
-- **Anisotropic Filtering** - Forces the selected level on every filtered sampler, from 2x to 16x.
+- **Anisotropic Filtering** - Forces the selected AF level, range: 2 to 16.
 
 ### Field of View
-- **Field of View** - Adjusts the player camera's field of view, from 45 to 140 degrees.
+- **Field of View** - The player camera's horizontal FOV in degrees, range: 45 to 140. Does not affect scopes or cutscenes.
 
 <div align="center">
   <table>

@@ -33,13 +33,10 @@ public:
                 switch (FusionFixSettings.GetInt(PREF_DISPLAYMODE))
                 {
                 case 1:
-                    fnFullscreen.Write();
-                    break;
-                case 2:
                     fnWindowed.Write();
                     break;
                 default:
-                    fnFullscreen.Restore();
+                    fnFullscreen.Write();
                     break;
                 }
             };

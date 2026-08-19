@@ -11,6 +11,7 @@ import skipintro;
 import fov;
 import displaymode;
 import vsync;
+import maxfps;
 import aniso;
 import hudfixes;
 import updatecheck;

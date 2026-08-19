@@ -8,11 +8,6 @@ import common;
 import chrome;
 import settings;
 
-// The video settings object carries a vsync flag that Video.scr sets and that the renderer folds
-// into a bit of the device flags on its way to CreateDevice and to every Reset. That fold is a
-// single conditional, so forcing the branch one way or the other decides vsync for the presentation
-// interval without touching the parsed setting, which means the game's own menu and Video.scr are
-// left saying whatever the player wrote in them.
 class VSync
 {
 public:
@@ -33,13 +28,10 @@ public:
                 switch (FusionFixSettings.GetInt(PREF_VSYNC))
                 {
                 case 1:
-                    fnForceOff.Write();
-                    break;
-                case 2:
                     fnForceOn.Write();
                     break;
                 default:
-                    fnForceOn.Restore();
+                    fnForceOff.Write();
                     break;
                 }
             };
