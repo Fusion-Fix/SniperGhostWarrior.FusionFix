@@ -3,7 +3,7 @@
 
 
 ## Installation
-The latest version of [Sniper: Ghost Warrior Fusion Fix](https://github.com/TGP482/SniperGhostWarrior.FusionFix/releases) can be found in the Releases page.
+The latest version of [Sniper: Ghost Warrior Fusion Fix](https://github.com/Fusion-Fix/SniperGhostWarrior.FusionFix/releases) can be found in the Releases page.
 
 ### Game Setup
 - After downloading Sniper: Ghost Warrior Fusion Fix, extract the contents to your Sniper: Ghost Warrior directory and overwrite all existing files when prompted.
@@ -61,5 +61,25 @@ The latest version of [Sniper: Ghost Warrior Fusion Fix](https://github.com/TGP4
   </table>
 </div>
 
+## Building from Source
 
+Requirements:
+- Visual Studio 2022 or 2026 (with C++ desktop workload)
+- Git (for submodule checkout)
 
+```bat
+git clone --recurse-submodules https://github.com/Fusion-Fix/SniperGhostWarrior.FusionFix
+cd SniperGhostWarrior.FusionFix
+premake5.bat
+```
+
+Open `build/SniperGhostWarrior.FusionFix.slnx` in Visual Studio and build.
+
+## Contributing
+
+Pull requests are welcome. Please open an issue first to discuss what you would like to change.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for workflow and reverse-engineering note conventions.
+
+## License
+
+[MIT](LICENSE)

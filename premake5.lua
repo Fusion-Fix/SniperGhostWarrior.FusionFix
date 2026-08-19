@@ -9,21 +9,10 @@ workspace "SniperGhostWarrior.FusionFix"
    architecture "x86"
    location "build"
    cppdialect "C++latest"
-   kind "SharedLib"
-   language "C++"
-   targetdir "bin/%{cfg.buildcfg}"
-   targetextension ".asi"
    buildoptions { "/dxifcInlineFunctions- /Zc:__cplusplus /utf-8" }
    staticruntime "On"
-   characterset ("Unicode")
    multiprocessorcompile ("On")
    startproject "SniperGhostWarrior.FusionFix"
-
-   defines { "rsc_CompanyName=\"SniperGhostWarrior.FusionFix\"" }
-   defines { "rsc_LegalCopyright=\"MIT license\""}
-   defines { "rsc_InternalName=\"%{prj.name}\"", "rsc_ProductName=\"%{prj.name}\"", "rsc_OriginalFilename=\"%{cfg.buildtarget.name}\"" }
-   defines { "rsc_FileDescription=\"Sniper: Ghost Warrior Fusion Fix\"" }
-   defines { "rsc_UpdateUrl=\"https://github.com/TGP482/SniperGhostWarrior.FusionFix\"" }
 
    local major = os.date("%d")
    local minor = os.date("%m")
@@ -54,40 +43,15 @@ workspace "SniperGhostWarrior.FusionFix"
       productVersion = productVersion .. "-" .. githash
    end
 
-   defines { "rsc_FileVersion_MAJOR=" .. major }
-   defines { "rsc_FileVersion_MINOR=" .. minor }
-   defines { "rsc_FileVersion_BUILD=" .. build }
-   defines { "rsc_FileVersion_REVISION=" .. revision }
-   defines { "rsc_FileVersion=\"" .. major .. "." .. minor .. "." .. build .. "\"" }
-   defines { "rsc_ProductVersion=\"" .. productVersion .. "\"" }
-   defines { "rsc_GitSHA1=\"" .. githash .. "\"" }
-   defines { "rsc_GitSHA1W=L\"" .. githash .. "\"" }
+   filter "configurations:Debug"
+      defines { "DEBUG" }
+      symbols "On"
 
-   defines { "_CRT_SECURE_NO_WARNINGS" }
+   filter "configurations:Release"
+      defines { "NDEBUG" }
+      optimize "On"
 
-   includedirs { "source" }
-   includedirs { "source/includes" }
-   files { "source/*.h", "source/*.hpp", "source/*.cpp", "source/*.hxx", "source/*.ixx" }
-   files { "source/resources/Versioninfo.rc" }
-
-   includedirs { "external/hooking" }
-   includedirs { "external/injector/include" }
-   includedirs { "external/injector/safetyhook/include" }
-   includedirs { "external/injector/zydis" }
-   includedirs { "external/inireader" }
-   files { "external/hooking/Hooking.Patterns.h", "external/hooking/Hooking.Patterns.cpp" }
-   files { "external/injector/safetyhook/include/safetyhook.hpp" }
-   files {
-      "external/injector/safetyhook/src/allocator.cpp",
-      "external/injector/safetyhook/src/easy.cpp",
-      "external/injector/safetyhook/src/inline_hook.cpp",
-      "external/injector/safetyhook/src/mid_hook.cpp",
-      "external/injector/safetyhook/src/os.windows.cpp",
-      "external/injector/safetyhook/src/utility.cpp",
-      "external/injector/safetyhook/src/vmt_hook.cpp",
-   }
-   files { "external/injector/zydis/Zydis.h", "external/injector/zydis/Zydis.c" }
-   files { "data/bin/plugins/*.ini" }
+   filter {}
 
    pbcommands = {
       "for %%P in (\"!SGWDIR!.\") do set \"SGWDIR=%%~fP\"",
@@ -100,12 +64,12 @@ workspace "SniperGhostWarrior.FusionFix"
       "endlocal",
       "exit /b 0" }
 
-   function setpaths (gamepath, exepath, pluginspath)
-      pluginspath = pluginspath or "plugins/"
+   function setpaths (gamepath, exepath, scriptspath)
+      scriptspath = scriptspath or "plugins/"
       if (gamepath) then
          local cmdcopy = {
             "setlocal EnableExtensions EnableDelayedExpansion",
-            "set \"SGWDIR=" .. (gamepath .. pluginspath):gsub("([^/\\])$", "%1/") .. "\"",
+            "set \"SGWDIR=" .. (gamepath .. scriptspath):gsub("([^/\\])$", "%1/") .. "\"",
          }
          for _, cmd in ipairs(pbcommands) do
             table.insert(cmdcopy, cmd)
@@ -121,13 +85,44 @@ workspace "SniperGhostWarrior.FusionFix"
       targetdir ("bin")
    end
 
-   filter "configurations:Debug"
-      defines { "DEBUG" }
-      symbols "On"
-
-   filter "configurations:Release"
-      defines { "NDEBUG" }
-      optimize "On"
-
 project "SniperGhostWarrior.FusionFix"
+   kind "SharedLib"
+   language "C++"
+   targetdir "bin/%{cfg.buildcfg}"
+   targetextension ".asi"
+   characterset ("Unicode")
+
+   defines { "rsc_CompanyName=\"SniperGhostWarrior.FusionFix\"" }
+   defines { "rsc_LegalCopyright=\"MIT\""}
+   defines { "rsc_InternalName=\"%{prj.name}\"", "rsc_ProductName=\"%{prj.name}\"", "rsc_OriginalFilename=\"%{cfg.buildtarget.name}\"" }
+   defines { "rsc_FileDescription=\"Sniper: Ghost Warrior Fusion Fix\"" }
+   defines { "rsc_UpdateUrl=\"https://github.com/Fusion-Fix/SniperGhostWarrior.FusionFix\"" }
+   defines { "rsc_FileVersion_MAJOR=" .. major }
+   defines { "rsc_FileVersion_MINOR=" .. minor }
+   defines { "rsc_FileVersion_BUILD=" .. build }
+   defines { "rsc_FileVersion_REVISION=" .. revision }
+   defines { "rsc_FileVersion=\"" .. major .. "." .. minor .. "." .. build .. "\"" }
+   defines { "rsc_ProductVersion=\"" .. productVersion .. "\"" }
+   defines { "rsc_GitSHA1=\"" .. githash .. "\"" }
+   defines { "rsc_GitSHA1W=L\"" .. githash .. "\"" }
+   defines { "_CRT_SECURE_NO_WARNINGS" }
+
+   includedirs { "source" }
+   includedirs { "source/includes" }
+   files { "source/**.h", "source/**.hpp", "source/**.cpp", "source/**.hxx", "source/**.ixx" }
+   files { "source/resources/Versioninfo.rc" }
+   files { "data/bin/plugins/*.ini" }
+
+   -- ##BEGIN_EXTERNAL_SUBMODULES## (managed by setup.py - do not edit this line)
+   includedirs { "external/injector/include" }
+   includedirs { "external/injector/safetyhook/include" }
+   includedirs { "external/injector/zydis" }
+   files { "external/injector/safetyhook/include/**.hpp", "external/injector/safetyhook/src/**.cpp" }
+   files { "external/injector/zydis/**.h", "external/injector/zydis/**.c" }
+   includedirs { "external/hooking" }
+   files { "external/hooking/Hooking.Patterns.h", "external/hooking/Hooking.Patterns.cpp" }
+   includedirs { "external/inireader" }
+   -- ##END_EXTERNAL_SUBMODULES## (managed by setup.py - do not edit this line)
+
+   -- Set game install path here for local debugging (not committed):
    setpaths("C:/Program Files (x86)/Steam/steamapps/common/Sniper Ghost Warrior/", "Sniper_x86.exe", "plugins/")

@@ -1,0 +1,34 @@
+{
+  "project_name": "SniperGhostWarrior.FusionFix",
+  "repo_url": "https://github.com/Fusion-Fix/SniperGhostWarrior.FusionFix",
+  "license_spdx": "MIT",
+  "architecture": "x86",
+  "output_kind": "SharedLib",
+  "target_extension": ".asi",
+  "default_branch": "main",
+  "premake_vs_version": "vs2026",
+  "submodules": [
+    {
+      "name": "injector",
+      "path": "external/injector",
+      "url": "https://github.com/ThirteenAG/injector",
+      "enabled": true
+    },
+    {
+      "name": "hooking",
+      "path": "external/hooking",
+      "url": "https://github.com/ThirteenAG/Hooking.Patterns",
+      "enabled": true
+    },
+    {
+      "name": "inireader",
+      "path": "external/inireader",
+      "url": "https://github.com/ThirteenAG/IniReader",
+      "enabled": true
+    }
+  ],
+  "run_git_submodule_add": false,
+  "run_initial_commit": false,
+  "enable_code_signing": true,
+  "plugin_sdk_game": ""
+}

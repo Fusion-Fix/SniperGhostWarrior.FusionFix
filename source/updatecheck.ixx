@@ -17,9 +17,9 @@ export module updatecheck;
 import common;
 
 static constexpr auto szTitle = L"SniperGhostWarrior.FusionFix";
-static constexpr auto szUpdateUrl = L"https://github.com/TGP482/SniperGhostWarrior.FusionFix";
+static constexpr auto szUpdateUrl = L"https://github.com/Fusion-Fix/SniperGhostWarrior.FusionFix";
 static constexpr auto szApiHost = L"api.github.com";
-static constexpr auto szApiPath = L"/repos/TGP482/SniperGhostWarrior.FusionFix/releases/latest";
+static constexpr auto szApiPath = L"/repos/Fusion-Fix/SniperGhostWarrior.FusionFix/releases/latest";
 
 static constexpr auto szCacheName = L"SniperGhostWarrior.FusionFix.update";
 static constexpr auto nCacheTTLSeconds = 24 * 60 * 60;

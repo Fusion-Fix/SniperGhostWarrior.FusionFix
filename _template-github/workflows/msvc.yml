@@ -1,0 +1,133 @@
+name: GitHub Actions Build
+
+on:
+  push:
+    paths-ignore:
+      - "**/*.md"
+      - '**/*.txt'
+    branches:
+      - '**'
+  pull_request:
+    paths-ignore:
+      - "**/*.md"
+      - '**/*.txt'
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "Create a release"
+        type: choice
+        required: false
+        default: 'false'
+        options:
+          - 'true'
+          - 'false'
+      version_increment:
+        description: "Default semantic version release type"
+        type: choice
+        required: false
+        default: 'minor'
+        options:
+          - 'major'
+          - 'minor'
+          - 'patch'
+
+env:
+  VERINC: ${{ github.event.inputs.version_increment || 'patch' }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-2025-vs2026
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v7
+      with:
+        submodules: recursive
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v3
+
+    - name: Auto Increment Version
+      uses: MCKanpolat/auto-semver-action@1.0.12
+      id: versioning
+      with:
+        releaseType: ${{ env.VERINC }}
+        incrementPerCommit: false
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Configure build
+      run: ./premake5 vs2026 --with-version=${{ steps.versioning.outputs.version }}
+
+    - name: Cache plugin-sdk build output
+      id: cache-plugin-sdk
+      uses: actions/cache@v6
+      with:
+        path: external/plugin-sdk/output
+        key: plugin-sdk-${{ runner.os }}-${{ hashFiles('external/plugin-sdk/**/*.h', 'external/plugin-sdk/**/*.cpp', 'external/plugin-sdk/**/*.c', 'external/plugin-sdk/safetyhook/**') }}
+
+    - name: Build plugin-sdk
+      if: steps.cache-plugin-sdk.outputs.cache-hit != 'true' && hashFiles('external/plugin-sdk/shared/plugin.h') != ''
+      shell: pwsh
+      run: |
+        $slnx = "build/SniperGhostWarrior.FusionFix.slnx"
+        $content = Get-Content $slnx -Raw
+        $sdkTargets = [regex]::Matches($content, '"(plugin_[a-zA-Z0-9_]+)"') |
+                      ForEach-Object { $_.Groups[1].Value } | Select-Object -Unique
+        foreach ($t in $sdkTargets) {
+          msbuild -m $slnx /target:$t /property:Configuration=Release /property:Platform=Win32
+          msbuild -m $slnx /target:$t /property:Configuration=Debug   /property:Platform=Win32
+        }
+
+    - name: Build
+      run: |
+        msbuild -m build/SniperGhostWarrior.FusionFix.slnx /property:Configuration=Release /property:Platform=Win32
+
+    - name: Download Ultimate ASI Loader
+      uses: robinraju/release-downloader@v1.13
+      with:
+        repository: "ThirteenAG/Ultimate-ASI-Loader"
+        tag: "Win32-latest"
+        fileName: "dinput8-Win32.zip"
+
+    - name: Unpack dependencies
+      shell: cmd
+      run: |
+          7z x dinput8-Win32.zip -odata/ -y
+          del dinput8-Win32.zip
+          del /f /q data\*.SHA512
+
+    - name: Pack binaries
+      run: |
+        ./release.bat
+      env:
+        CODE_SIGNING_PFX: ${{ github.ref_name == 'main' && (github.event_name == 'push' || github.event.inputs.release == 'true') && secrets.CODE_SIGNING_PFX || '' }}
+        CODE_SIGNING_PASSWORD: ${{ github.ref_name == 'main' && (github.event_name == 'push' || github.event.inputs.release == 'true') && secrets.CODE_SIGNING_PASSWORD || '' }}
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v7
+      with:
+        archive: false
+        name: SniperGhostWarrior.FusionFix
+        path: SniperGhostWarrior.FusionFix.zip
+
+    - name: Upload Release
+      if: |
+        github.event.inputs.release == 'true' &&
+        github.ref_name == 'main' &&
+        (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+        github.repository == 'Fusion-Fix/SniperGhostWarrior.FusionFix'
+      uses: ncipollo/release-action@v1.21.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        allowUpdates: false
+        name: SniperGhostWarrior.FusionFix v${{ steps.versioning.outputs.version }}
+        body: "[README](https://github.com/Fusion-Fix/SniperGhostWarrior.FusionFix#readme)"
+        tag: v${{ steps.versioning.outputs.version }}
+        artifacts: SniperGhostWarrior.FusionFix.zip
