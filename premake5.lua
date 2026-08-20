@@ -54,26 +54,33 @@ workspace "SniperGhostWarrior.FusionFix"
    filter {}
 
    pbcommands = {
+      "setlocal EnableDelayedExpansion",
+      "if defined SGWDIR (",
       "for %%P in (\"!SGWDIR!.\") do set \"SGWDIR=%%~fP\"",
       "for %%S in (\"$(TargetPath)\") do (set \"SGWSRC=%%~fS\" & set \"SGWNAME=%%~nxS\")",
       "set \"SGWDST=!SGWDIR!\\!SGWNAME!\"",
-      "if not exist \"!SGWDIR!\\\" goto :SGWDONE",
-      "if /I \"!SGWSRC!\"==\"!SGWDST!\" goto :SGWDONE",
+      "if exist \"!SGWDIR!\\\" (",
+      "if /I not \"!SGWSRC!\"==\"!SGWDST!\" (",
       "copy /y \"!SGWSRC!\" \"!SGWDST!\" >nul",
-      ":SGWDONE",
+      ")",
+      ")",
+      ") else (",
+      "set file=$(TargetPath)",
+      "FOR %%i IN (\"%file%\") DO (",
+      "set filename=%%~ni",
+      "set fileextension=%%~xi",
+      "set target=!path!!filename!!fileextension!",
+      "if exist \"!target!\" copy /y \"!file!\" \"!target!\"",
+      ")",
+      ")",
       "endlocal",
       "exit /b 0" }
 
    function setpaths (gamepath, exepath, scriptspath)
-      scriptspath = scriptspath or "plugins/"
+      scriptspath = scriptspath or "scripts/"
       if (gamepath) then
-         local cmdcopy = {
-            "setlocal EnableExtensions EnableDelayedExpansion",
-            "set \"SGWDIR=" .. (gamepath .. scriptspath):gsub("([^/\\])$", "%1/") .. "\"",
-         }
-         for _, cmd in ipairs(pbcommands) do
-            table.insert(cmdcopy, cmd)
-         end
+         cmdcopy = { "set \"path=" .. gamepath .. scriptspath .. "\"" }
+         table.insert(cmdcopy, pbcommands)
          postbuildcommands (cmdcopy)
          debugdir (gamepath)
          if (exepath) then
@@ -82,20 +89,20 @@ workspace "SniperGhostWarrior.FusionFix"
             debugdir (gamepath .. (dir or ""))
          end
       end
-      targetdir ("bin")
+      targetdir ("data/plugins")
    end
 
 project "SniperGhostWarrior.FusionFix"
    kind "SharedLib"
    language "C++"
-   targetdir "bin/%{cfg.buildcfg}"
+   targetdir "data/plugins"
    targetextension ".asi"
    characterset ("Unicode")
 
    defines { "rsc_CompanyName=\"SniperGhostWarrior.FusionFix\"" }
-   defines { "rsc_LegalCopyright=\"MIT\""}
+   defines { "rsc_LegalCopyright=\"GPL-3.0-only\""}
    defines { "rsc_InternalName=\"%{prj.name}\"", "rsc_ProductName=\"%{prj.name}\"", "rsc_OriginalFilename=\"%{cfg.buildtarget.name}\"" }
-   defines { "rsc_FileDescription=\"Sniper: Ghost Warrior Fusion Fix\"" }
+   defines { "rsc_FileDescription=\"SniperGhostWarrior.FusionFix\"" }
    defines { "rsc_UpdateUrl=\"https://github.com/Fusion-Fix/SniperGhostWarrior.FusionFix\"" }
    defines { "rsc_FileVersion_MAJOR=" .. major }
    defines { "rsc_FileVersion_MINOR=" .. minor }
@@ -111,18 +118,19 @@ project "SniperGhostWarrior.FusionFix"
    includedirs { "source/includes" }
    files { "source/**.h", "source/**.hpp", "source/**.cpp", "source/**.hxx", "source/**.ixx" }
    files { "source/resources/Versioninfo.rc" }
-   files { "data/bin/plugins/*.ini" }
 
-   -- ##BEGIN_EXTERNAL_SUBMODULES## (managed by setup.py - do not edit this line)
+   -- injector
    includedirs { "external/injector/include" }
    includedirs { "external/injector/safetyhook/include" }
    includedirs { "external/injector/zydis" }
    files { "external/injector/safetyhook/include/**.hpp", "external/injector/safetyhook/src/**.cpp" }
    files { "external/injector/zydis/**.h", "external/injector/zydis/**.c" }
+   -- hooking
    includedirs { "external/hooking" }
    files { "external/hooking/Hooking.Patterns.h", "external/hooking/Hooking.Patterns.cpp" }
+   -- inireader
    includedirs { "external/inireader" }
-   -- ##END_EXTERNAL_SUBMODULES## (managed by setup.py - do not edit this line)
+   -- filewatch
+   includedirs { "external/filewatch" }
 
-   -- Set game install path here for local debugging (not committed):
    setpaths("C:/Program Files (x86)/Steam/steamapps/common/Sniper Ghost Warrior/", "Sniper_x86.exe", "plugins/")

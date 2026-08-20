@@ -216,8 +216,4 @@ node_modules/
 
 # Output artifact
 SniperGhostWarrior.FusionFix.zip
-data/bin/plugins/SniperGhostWarrior.FusionFix.asi
-
-# The release layout mirrors the game folder, so data/bin must survive the [Bb]in/ rule above
-!data/bin/
-!data/bin/**
+data/plugins/SniperGhostWarrior.FusionFix.asi

@@ -1,9 +1,12 @@
+[submodule "external/injector"]
+	path = external/injector
+	url = https://github.com/ThirteenAG/injector
 [submodule "external/hooking"]
 	path = external/hooking
 	url = https://github.com/ThirteenAG/Hooking.Patterns
 [submodule "external/inireader"]
 	path = external/inireader
 	url = https://github.com/ThirteenAG/IniReader
-[submodule "external/injector"]
-	path = external/injector
-	url = https://github.com/ThirteenAG/injector
+[submodule "external/filewatch"]
+	path = external/filewatch
+	url = https://github.com/ThomasMonkman/filewatch
