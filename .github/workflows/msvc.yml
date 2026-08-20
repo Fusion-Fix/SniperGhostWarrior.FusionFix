@@ -65,26 +65,6 @@ jobs:
     - name: Configure build
       run: ./premake5 vs2026 --with-version=${{ steps.versioning.outputs.version }}
 
-    - name: Cache plugin-sdk build output
-      id: cache-plugin-sdk
-      uses: actions/cache@v6
-      with:
-        path: external/plugin-sdk/output
-        key: plugin-sdk-${{ runner.os }}-${{ hashFiles('external/plugin-sdk/**/*.h', 'external/plugin-sdk/**/*.cpp', 'external/plugin-sdk/**/*.c', 'external/plugin-sdk/safetyhook/**') }}
-
-    - name: Build plugin-sdk
-      if: steps.cache-plugin-sdk.outputs.cache-hit != 'true' && hashFiles('external/plugin-sdk/shared/plugin.h') != ''
-      shell: pwsh
-      run: |
-        $slnx = "build/SniperGhostWarrior.FusionFix.slnx"
-        $content = Get-Content $slnx -Raw
-        $sdkTargets = [regex]::Matches($content, '"(plugin_[a-zA-Z0-9_]+)"') |
-                      ForEach-Object { $_.Groups[1].Value } | Select-Object -Unique
-        foreach ($t in $sdkTargets) {
-          msbuild -m $slnx /target:$t /property:Configuration=Release /property:Platform=Win32
-          msbuild -m $slnx /target:$t /property:Configuration=Debug   /property:Platform=Win32
-        }
-
     - name: Build
       run: |
         msbuild -m build/SniperGhostWarrior.FusionFix.slnx /property:Configuration=Release /property:Platform=Win32
