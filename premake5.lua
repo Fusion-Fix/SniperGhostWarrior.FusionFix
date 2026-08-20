@@ -89,13 +89,13 @@ workspace "SniperGhostWarrior.FusionFix"
             debugdir (gamepath .. (dir or ""))
          end
       end
-      targetdir ("data/plugins")
+      targetdir ("bin/%{cfg.buildcfg}")
    end
 
 project "SniperGhostWarrior.FusionFix"
    kind "SharedLib"
    language "C++"
-   targetdir "data/plugins"
+   targetdir ("bin/%{cfg.buildcfg}")
    targetextension ".asi"
    characterset ("Unicode")
 
