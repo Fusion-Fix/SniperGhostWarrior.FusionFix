@@ -46,6 +46,7 @@
 
 ### Fixes
 - Fixed an issue where HUD elements wouldn't scale properly at higher resolutions.
+- Fixed the menu movies playing back greyscale and upside down.
 
 <div align="center">
   <table>

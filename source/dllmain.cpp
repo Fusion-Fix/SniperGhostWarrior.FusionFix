@@ -16,6 +16,7 @@ import maxfps;
 import aniso;
 import gameplay;
 import hudfixes;
+import moviefixes;
 import updatecheck;
 
 void Init()
