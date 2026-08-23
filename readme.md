@@ -1,6 +1,7 @@
 # SniperGhostWarrior.FusionFix
 
-> A fix/enhancement mod for [Game Name].
+<img width="5533" height="1687" alt="image (6)" src="https://github.com/user-attachments/assets/38a14f15-1585-482e-bf9c-d192943e3cb7" />
+
 
 ## Installation
 
