@@ -19,6 +19,8 @@ export enum Pref
     PREF_VSYNC,
     PREF_MAXFRAMERATE,
     PREF_ANISOTROPICFILTERING,
+    PREF_LODDISTANCE,
+    PREF_SHADOWMAPSIZE,
     PREF_FIELDOFVIEW,
     PREF_NODETECTIONINDICATOR,
     PREF_NOWAYPOINTMARKER,
@@ -68,6 +70,17 @@ public:
         if (nAnisotropicFiltering == 1)
             nAnisotropicFiltering = 0;
         mPrefs[PREF_ANISOTROPICFILTERING] = nAnisotropicFiltering;
+
+    mPrefs[PREF_LODDISTANCE] = std::clamp(iniReader.ReadInteger("Graphics", "LODDistance", 0), 0, 3);
+
+    // Zero leaves whatever the video config asked for. Anything else is a power of two, because
+    // the atlas is four of these side by side and the driver is happier when it is.
+    auto nShadowMapSize = iniReader.ReadInteger("Graphics", "ShadowMapSize", 0);
+    if (nShadowMapSize > 0)
+        nShadowMapSize = static_cast<int32_t>(std::bit_ceil(static_cast<uint32_t>(std::clamp(nShadowMapSize, 256, 4096))));
+    else
+        nShadowMapSize = 0;
+    mPrefs[PREF_SHADOWMAPSIZE] = nShadowMapSize;
 
         mPrefs[PREF_FIELDOFVIEW] = std::clamp(iniReader.ReadFloat("FieldOfView", "FieldOfView", 91.35f), 45.0f, 140.0f);
 

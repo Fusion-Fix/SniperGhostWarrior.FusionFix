@@ -20,6 +20,8 @@
 
 ### Graphics
 - **Anisotropic Filtering** - Forces the selected AF level, range: 2 to 16.
+- **LOD Distance** - Multiplies the distance at which meshes drop to a lower LOD and at which they stop drawing altogether: (0) default, (1) 2x, (2) 4x, (3) 8x.
+- **Shadow Map Size** - Sets the shadow map resolution per cascade: (0) default, range: 256 - 4096
 
 ### Gameplay
 - **No Detection Indicator** - Removes the detection indicator.

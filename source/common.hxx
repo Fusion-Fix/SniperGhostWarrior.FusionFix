@@ -11,6 +11,7 @@
 #include "Hooking.Patterns.h"
 #include "safetyhook.hpp"
 #include <algorithm>
+#include <bit>
 #include <utility>
 #include <cmath>
 #include <thread>

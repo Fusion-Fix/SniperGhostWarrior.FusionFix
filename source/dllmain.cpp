@@ -14,6 +14,8 @@ import internalres;
 import vsync;
 import maxfps;
 import aniso;
+import lod;
+import shadows;
 import gameplay;
 import hudfixes;
 import moviefixes;
