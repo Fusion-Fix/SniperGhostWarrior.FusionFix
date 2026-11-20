@@ -21,8 +21,6 @@ public:
         FusionFix::onEngineInitEvent() += []()
         {
             auto pattern = engine_pattern("80 3D ? ? ? ? 00 C6 87 BB 06 00 00 01 0F 94 C0 88 47 2C 88 47 10");
-            if (pattern.empty())
-                return;
 
             // setz al, replaced with mov al, 1 or mov al, 0 and a pad byte.
             static raw_mem fnFullscreen(pattern.get_first(14), { 0xB0, 0x01, 0x90 });
@@ -44,7 +42,7 @@ public:
             DisplayModeCB();
 
             // Video.scr is parsed once during startup, so a change lands on the next launch.
-            FusionFix::onIniFileChange() += []()
+            FusionFix::onSettingsChange() += []()
             {
                 DisplayModeCB();
             };

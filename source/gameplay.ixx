@@ -32,7 +32,6 @@ public:
             auto waypointPattern = gamedll_pattern("DF E0 F6 C4 41 75 12 B0 01 8B CB 50 FF 15 ? ? ? ? D9 E8 D9 5B 74 EB 2C");
             auto waypointGroupPattern = gamedll_pattern("8A 43 1C A8 02 74 08 A8 04 74 04 B0 01 EB 02 32 C0 50 8B CB FF 15");
 
-            if (!staturePattern.empty() && !detectionSimplePattern.empty() && !detectionPattern.empty())
             {
                 // The setz that decides which of the three stature images is the visible one,
                 // turned into a plain zero so none of them is.
@@ -66,10 +65,9 @@ public:
                 };
 
                 DetectionIndicatorCB();
-                FusionFix::onIniFileChange() += []() { DetectionIndicatorCB(); };
+                FusionFix::onSettingsChange() += []() { DetectionIndicatorCB(); };
             }
 
-            if (!waypointPattern.empty() && !waypointGroupPattern.empty())
             {
                 // Both sites load the visibility argument into AL. Zeroing it hides the group.
                 static raw_mem fnWaypoint(waypointPattern.get_first(7), { 0x32, 0xC0 });
@@ -90,7 +88,7 @@ public:
                 };
 
                 WaypointMarkerCB();
-                FusionFix::onIniFileChange() += []() { WaypointMarkerCB(); };
+                FusionFix::onSettingsChange() += []() { WaypointMarkerCB(); };
             }
         };
     }

@@ -31,7 +31,7 @@ enum ScalingFilter
 static constexpr ptrdiff_t nRendererScreenWidth = 0x637C;
 static constexpr ptrdiff_t nRendererScreenHeight = 0x6380;
 
-static int32_t nRequestedW = 0;         // from the ini; 0 leaves the game entirely alone
+static int32_t nRequestedW = 0;         // 0 leaves the game entirely alone
 static int32_t nRequestedH = 0;
 static int32_t nFilter = FILTER_BILINEAR;
 
@@ -530,11 +530,6 @@ public:
 
             // All or nothing: a half-installed substitution renders into a surface no pass puts
             // back on screen.
-            if (deviceTail.empty() || deviceChange.empty() || setMode.empty() || backBufferViewport.empty()
-                || uiScreenSize.empty() || pointToScreen.empty() || pointToScreenClamped.empty()
-                || screenExtents.empty() || screenSizeGetters.empty() || videoSettingsApply.empty()
-                || videoSettingsReapply.empty() || present.empty())
-                return;
 
             ppBackBuffer = *deviceTail.get_first<IDirect3DSurface9**>(4);
             ppDevice = *deviceTail.get_first<IDirect3DDevice9**>(18);
@@ -643,7 +638,7 @@ public:
             });
 
             // Read when the mode is set, so a change lands on the next launch or mode change.
-            FusionFix::onIniFileChange() += []()
+            FusionFix::onSettingsChange() += []()
             {
                 InternalResolutionCB();
             };

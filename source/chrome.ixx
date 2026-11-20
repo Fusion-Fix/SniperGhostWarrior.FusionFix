@@ -26,8 +26,6 @@ export hook::pattern gamedll_pattern(std::string_view bytes)
 export void InitEngine()
 {
     hEngine = GetModuleHandleW(L"engine_x86.dll");
-    if (!hEngine)
-        return;
 
     FusionFix::onEngineInitEvent().executeAll();
 }
@@ -35,8 +33,6 @@ export void InitEngine()
 export void InitGameDLL()
 {
     hGameDLL = GetModuleHandleW(L"GameDLL_x86.dll");
-    if (!hGameDLL)
-        return;
 
     FusionFix::onGameDLLInitEvent().executeAll();
 }

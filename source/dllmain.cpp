@@ -19,12 +19,10 @@ import shadows;
 import gameplay;
 import hudfixes;
 import moviefixes;
-import updatecheck;
 
 void Init()
 {
-    FusionFixSettings.ReadIniSettings();
-    FusionFix::onStartupPromptEvent().executeAll();
+    FusionFixSettings.Initialize();
     FusionFix::onInitEvent().executeAll();
 }
 

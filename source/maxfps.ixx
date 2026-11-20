@@ -111,8 +111,6 @@ public:
             // the frame delta the engine measures and the rate the player sees describing the same
             // interval.
             auto pattern = engine_pattern("56 57 8B F9 80 BF F2 02 00 00 00 74 38");
-            if (pattern.empty())
-                return;
 
             QueryPerformanceFrequency(&nCounterFrequency);
 
@@ -132,7 +130,7 @@ public:
             });
 
             // Read at the top of every frame, so a change lands on the next one.
-            FusionFix::onIniFileChange() += []()
+            FusionFix::onSettingsChange() += []()
             {
                 MaxFrameRateCB();
             };

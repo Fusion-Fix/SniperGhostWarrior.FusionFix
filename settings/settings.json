@@ -1,0 +1,332 @@
+{
+  "format": "asi-settings",
+  "version": "1.0",
+  "plugin": {
+    "name": "Sniper Ghost Warrior Fusion Fix",
+    "priority": 100,
+    "games": [
+      {
+        "name": "Sniper: Ghost Warrior",
+        "exe": [
+          "Sniper_x86.exe"
+        ]
+      }
+    ]
+  },
+  "pages": [
+    {
+      "id": "general",
+      "title": "@page.general",
+      "section": "other"
+    },
+    {
+      "id": "display",
+      "title": "@page.display",
+      "section": "display"
+    },
+    {
+      "id": "graphics",
+      "title": "@page.graphics",
+      "section": "graphics"
+    },
+    {
+      "id": "fieldofview",
+      "title": "@page.fieldofview",
+      "section": "display"
+    },
+    {
+      "id": "gameplay",
+      "title": "@page.gameplay",
+      "section": "other"
+    }
+  ],
+  "settings": [
+    {
+      "id": "General.SkipIntro",
+      "type": "bool",
+      "default": 1,
+      "label": "@SkipIntro",
+      "description": "@SkipIntro.description",
+      "page": "general",
+      "apply": "restart",
+      "presets": {
+        "vanilla": 0,
+        "recommended": 1,
+        "enhanced": 1
+      }
+    },
+    {
+      "id": "General.SkipPressAnyKey",
+      "type": "bool",
+      "default": 1,
+      "label": "@SkipPressAnyKey",
+      "description": "@SkipPressAnyKey.description",
+      "page": "general",
+      "apply": "live",
+      "presets": {
+        "vanilla": 0,
+        "recommended": 1,
+        "enhanced": 1
+      }
+    },
+    {
+      "id": "Display.DisplayMode",
+      "type": "choice",
+      "default": 0,
+      "label": "@DisplayMode",
+      "description": "@DisplayMode.description",
+      "page": "display",
+      "apply": "restart",
+      "presets": {
+        "vanilla": 0,
+        "recommended": 0,
+        "enhanced": 0
+      },
+      "choices": [
+        {
+          "value": 0,
+          "label": "@fullscreen"
+        },
+        {
+          "value": 1,
+          "label": "@windowed"
+        }
+      ]
+    },
+    {
+      "id": "Display.InternalResolutionX",
+      "type": "int",
+      "default": 0,
+      "label": "@InternalResolutionX",
+      "description": "@InternalResolutionX.description",
+      "page": "display",
+      "apply": "restart",
+      "presets": {
+        "vanilla": 0,
+        "recommended": 0,
+        "enhanced": 0
+      },
+      "min": 0,
+      "max": 16384,
+      "step": 1,
+      "special": [
+        {
+          "value": 0,
+          "label": "@default"
+        }
+      ]
+    },
+    {
+      "id": "Display.InternalResolutionY",
+      "type": "int",
+      "default": 0,
+      "label": "@InternalResolutionY",
+      "description": "@InternalResolutionY.description",
+      "page": "display",
+      "apply": "restart",
+      "presets": {
+        "vanilla": 0,
+        "recommended": 0,
+        "enhanced": 0
+      },
+      "min": 0,
+      "max": 16384,
+      "step": 1,
+      "special": [
+        {
+          "value": 0,
+          "label": "@default"
+        }
+      ]
+    },
+    {
+      "id": "Display.ScalingFilter",
+      "type": "choice",
+      "default": 1,
+      "label": "@ScalingFilter",
+      "description": "@ScalingFilter.description",
+      "page": "display",
+      "apply": "live",
+      "presets": {
+        "vanilla": 1,
+        "recommended": 1,
+        "enhanced": 1
+      },
+      "choices": [
+        {
+          "value": 0,
+          "label": "@point"
+        },
+        {
+          "value": 1,
+          "label": "@bilinear"
+        }
+      ]
+    },
+    {
+      "id": "Display.VSync",
+      "type": "bool",
+      "default": 1,
+      "label": "@VSync",
+      "description": "@VSync.description",
+      "page": "display",
+      "apply": "restart",
+      "presets": {
+        "vanilla": 0,
+        "recommended": 1,
+        "enhanced": 1
+      }
+    },
+    {
+      "id": "Display.MaxFrameRate",
+      "type": "int",
+      "default": 1,
+      "label": "@MaxFrameRate",
+      "description": "@MaxFrameRate.description",
+      "page": "display",
+      "apply": "live",
+      "presets": {
+        "vanilla": 0,
+        "recommended": 1,
+        "enhanced": 1
+      },
+      "min": 0,
+      "max": 1000,
+      "step": 1,
+      "special": [
+        {
+          "value": 0,
+          "label": "@uncapped"
+        },
+        {
+          "value": 1,
+          "label": "@displayrate"
+        }
+      ]
+    },
+    {
+      "id": "Graphics.AnisotropicFiltering",
+      "type": "int",
+      "default": 16,
+      "label": "@AnisotropicFiltering",
+      "description": "@AnisotropicFiltering.description",
+      "page": "graphics",
+      "apply": "restart",
+      "presets": {
+        "vanilla": 0,
+        "recommended": 16,
+        "enhanced": 16
+      },
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "special": [
+        {
+          "value": 0,
+          "label": "@default"
+        }
+      ]
+    },
+    {
+      "id": "Graphics.LODDistance",
+      "type": "choice",
+      "default": 0,
+      "label": "@LODDistance",
+      "description": "@LODDistance.description",
+      "page": "graphics",
+      "apply": "live",
+      "presets": {
+        "vanilla": 0,
+        "recommended": 0,
+        "enhanced": 0
+      },
+      "choices": [
+        {
+          "value": 0,
+          "label": "@default"
+        },
+        {
+          "value": 1,
+          "label": "2×"
+        },
+        {
+          "value": 2,
+          "label": "4×"
+        },
+        {
+          "value": 3,
+          "label": "8×"
+        }
+      ]
+    },
+    {
+      "id": "Graphics.ShadowMapSize",
+      "type": "int",
+      "default": 0,
+      "label": "@ShadowMapSize",
+      "description": "@ShadowMapSize.description",
+      "page": "graphics",
+      "apply": "restart",
+      "presets": {
+        "vanilla": 0,
+        "recommended": 0,
+        "enhanced": 0
+      },
+      "min": 0,
+      "max": 4096,
+      "step": 1,
+      "special": [
+        {
+          "value": 0,
+          "label": "@default"
+        }
+      ]
+    },
+    {
+      "id": "FieldOfView.FieldOfView",
+      "type": "float",
+      "default": 91.35,
+      "label": "@FieldOfView",
+      "description": "@FieldOfView.description",
+      "page": "fieldofview",
+      "apply": "nextLevel",
+      "presets": {
+        "vanilla": 91.35,
+        "recommended": 91.35,
+        "enhanced": 91.35
+      },
+      "min": 45,
+      "max": 140,
+      "step": 0.01,
+      "decimals": 2
+    },
+    {
+      "id": "Gameplay.NoDetectionIndicator",
+      "type": "bool",
+      "default": 0,
+      "label": "@NoDetectionIndicator",
+      "description": "@NoDetectionIndicator.description",
+      "page": "gameplay",
+      "apply": "live",
+      "presets": {
+        "vanilla": 0,
+        "recommended": 0,
+        "enhanced": 0
+      }
+    },
+    {
+      "id": "Gameplay.NoWaypointMarker",
+      "type": "bool",
+      "default": 0,
+      "label": "@NoWaypointMarker",
+      "description": "@NoWaypointMarker.description",
+      "page": "gameplay",
+      "apply": "live",
+      "presets": {
+        "vanilla": 0,
+        "recommended": 0,
+        "enhanced": 0
+      }
+    }
+  ]
+}

@@ -2,7 +2,6 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <subauth.h>
-#include "IniReader.h"
 #include "injector/injector.hpp"
 #include "injector/calling.hpp"
 #include "injector/hooking.hpp"

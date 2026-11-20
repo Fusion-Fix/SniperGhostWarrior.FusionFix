@@ -13,6 +13,9 @@ workspace "SniperGhostWarrior.FusionFix"
    staticruntime "On"
    multiprocessorcompile ("On")
    startproject "SniperGhostWarrior.FusionFix"
+   includedirs { "build/generated" }
+   resincludedirs { "build/generated" }
+   prebuildcommands { 'powershell -NoProfile -ExecutionPolicy Bypass -File "../tools/buildtime.ps1" -Out "../build/generated/BuildTime.h"' }
 
    local major = os.date("%d")
    local minor = os.date("%m")
@@ -50,6 +53,7 @@ workspace "SniperGhostWarrior.FusionFix"
    filter "configurations:Release"
       defines { "NDEBUG" }
       optimize "On"
+      symbols "On"
 
    filter {}
 
@@ -115,7 +119,12 @@ project "SniperGhostWarrior.FusionFix"
    defines { "_CRT_SECURE_NO_WARNINGS" }
 
    includedirs { "source" }
-   includedirs { "source/includes" }
+   includedirs { "source/includes", "external/FusionFixUtils" }
+   resincludedirs { _SCRIPT_DIR }
+   files { "source/resources/Settings.rc", "settings/settings.json", "settings/text/*.json" }
+   dependson { "AsiSettingsValidator" }
+   prebuildcommands { '"../bin/tools/asi-settings-validate.exe" "../settings/settings.json" "../settings/text/en.json" "../settings/text/fr.json" "../settings/text/de.json" "../settings/text/it.json" "../settings/text/es.json" "../settings/text/ja.json"' }
+   postbuildcommands { '"../bin/tools/asi-settings-validate.exe" "$(TargetPath)"' }
    files { "source/**.h", "source/**.hpp", "source/**.cpp", "source/**.hxx", "source/**.ixx" }
    files { "source/resources/Versioninfo.rc" }
 
@@ -128,9 +137,12 @@ project "SniperGhostWarrior.FusionFix"
    -- hooking
    includedirs { "external/hooking" }
    files { "external/hooking/Hooking.Patterns.h", "external/hooking/Hooking.Patterns.cpp" }
-   -- inireader
-   includedirs { "external/inireader" }
-   -- filewatch
-   includedirs { "external/filewatch" }
 
    setpaths("C:/Program Files (x86)/Steam/steamapps/common/Sniper Ghost Warrior/", "Sniper_x86.exe", "plugins/")
+
+project "AsiSettingsValidator"
+   kind "ConsoleApp"
+   language "C++"
+   targetdir "bin/tools"
+   targetname "asi-settings-validate"
+   files { "external/FusionFixUtils/asi_settings/tools/validator.cpp" }

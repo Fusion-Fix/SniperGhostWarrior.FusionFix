@@ -29,8 +29,6 @@ public:
             // holds the game object, so the multiplier rides on top of whatever the zoom decided
             // rather than replacing it.
             auto pattern = engine_pattern("D9 C2 DE F2 D9 C9 D9 99 B4 00 00 00 DE F9 D9 99 B8 00 00 00");
-            if (pattern.empty())
-                return;
 
             static auto LodDistanceCB = []()
             {
@@ -46,7 +44,7 @@ public:
             });
 
             // The field is rewritten on every camera update, so a change lands the same frame.
-            FusionFix::onIniFileChange() += []()
+            FusionFix::onSettingsChange() += []()
             {
                 LodDistanceCB();
             };

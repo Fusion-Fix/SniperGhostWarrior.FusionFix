@@ -52,15 +52,7 @@ public:
             auto maxPattern = engine_pattern("8B 57 18 A1 ? ? ? ? 8B 08 52 6A 0A 56 50 8B 81 14 01 00 00 FF D0");
             auto mipPattern = engine_pattern("8B 57 08 A1 ? ? ? ? 8B 08 52 6A 07 56 50 8B 81 14 01 00 00 FF D0");
 
-            if (minPattern.empty() || maxPattern.empty())
-                return;
-
-            static auto AnisotropicFilteringCB = []()
-            {
-                nAnisotropicFiltering = static_cast<uint32_t>(FusionFixSettings.GetInt(PREF_ANISOTROPICFILTERING));
-            };
-
-            AnisotropicFilteringCB();
+            nAnisotropicFiltering = static_cast<uint32_t>(FusionFixSettings.GetInt(PREF_ANISOTROPICFILTERING));
 
             // Each hook sits immediately after the descriptor field has been read into EDX and
             // before it is pushed, so rewriting EDX is the whole of the change.
@@ -78,22 +70,11 @@ public:
 
             // Anisotropic minification with point mip selection still shows the mip seam it is
             // being asked to hide, so the pair moves together where the sampler already filters.
-            if (!mipPattern.empty())
+            static auto MipFilterHook = safetyhook::create_mid(mipPattern.get_first(3), [](SafetyHookContext& regs)
             {
-                static auto MipFilterHook = safetyhook::create_mid(mipPattern.get_first(3), [](SafetyHookContext& regs)
-                {
-                    if (WantsAnisotropy(regs.edi) && regs.edx == nFilterPoint)
-                        regs.edx = nFilterLinear;
-                });
-            }
-            else
-
-            // The samplers are programmed from the descriptor on every bind, so a change lands
-            // within a frame or two rather than on the next launch.
-            FusionFix::onIniFileChange() += []()
-            {
-                AnisotropicFilteringCB();
-            };
+                if (WantsAnisotropy(regs.edi) && regs.edx == nFilterPoint)
+                    regs.edx = nFilterLinear;
+            });
         };
     }
 } AnisotropicFiltering;

@@ -57,25 +57,21 @@ public:
             auto keepPosXPattern = engine_pattern("81 8E 34 01 00 00 00 02 00 00");
             auto keepPosYPattern = engine_pattern("81 8E 34 01 00 00 00 08 00 00");
 
-            if (!keepWidthPattern.empty())
             {
                 static raw_mem fnKeepWidth(keepWidthPattern.get_first(0), { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
                 fnKeepWidth.Write();
             }
 
-            if (!keepHeightPattern.empty())
             {
                 static raw_mem fnKeepHeight(keepHeightPattern.get_first(0), { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
                 fnKeepHeight.Write();
             }
 
-            if (!keepPosXPattern.empty())
             {
                 static raw_mem fnKeepPosX(keepPosXPattern.get_first(0), { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
                 fnKeepPosX.Write();
             }
 
-            if (!keepPosYPattern.empty())
             {
                 static raw_mem fnKeepPosY(keepPosYPattern.get_first(0), { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
                 fnKeepPosY.Write();
@@ -84,8 +80,6 @@ public:
             // The per frame screen scale, from the load of the game object through to the point
             // where both axis scales are on the stack.
             auto scalePattern = engine_pattern("A1 ? ? ? ? DB 40 74 DB 40 70 8B 45 10 D8 30 8B 33 8B 53 04 D9 5C 24 14 D8 70 04 8D 04 96 3B F0 D9 5C 24 18 D9 E8 D9 5C 24 1C");
-            if (scalePattern.empty())
-                return;
 
             ppGame = *scalePattern.get_first<void**>(1);
 
@@ -119,8 +113,6 @@ public:
             // The guard on the engine's own safe area inset, reached once per screen with the
             // screen still in ESI and its position already in display pixels.
             auto centrePattern = engine_pattern("80 3D ? ? ? ? 00 74 76 8B 06 8B 90 50 02 00 00 8B CE FF D2 84 C0");
-            if (centrePattern.empty())
-                return;
 
             static auto CentreHook = safetyhook::create_mid(centrePattern.get_first(0), [](SafetyHookContext& regs)
             {

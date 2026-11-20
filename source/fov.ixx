@@ -76,8 +76,6 @@ public:
         FusionFix::onGameDLLInitEvent() += []()
         {
             auto pattern = gamedll_pattern("55 8B EC 83 E4 F8 51 56 8B F1 FF 15 ? ? ? ? D9 40 4C 51 D9 96 90 00 00 00 8D 4E F8 D9 1C 24 FF 15 ? ? ? ?");
-            if (pattern.empty())
-                return;
 
             static auto FieldOfViewCB = []()
             {
@@ -99,7 +97,7 @@ public:
 
             // The camera reads the level value when it is built, so a change lands the next time one
             // is, which in practice is the next level load.
-            FusionFix::onIniFileChange() += []()
+            FusionFix::onSettingsChange() += []()
             {
                 FieldOfViewCB();
             };

@@ -25,40 +25,30 @@ public:
         {
             // The StartIntro gate. The absolute address the CMP reads is the flag itself.
             auto pattern = gamedll_pattern("80 3D ? ? ? ? 00 57 8B F9 74 18 8B 07 8B 90 B4 01 00 00 6A 00 C7 87 44 05 00 00");
-            uint8_t* pNoLogos = pattern.empty() ? nullptr : *pattern.get_first<uint8_t*>(2);
+            uint8_t* pNoLogos = *pattern.get_first<uint8_t*>(2);
 
             // A separate prompt, shown when a level has finished loading rather than at startup.
             auto keyPattern = gamedll_pattern("80 A6 8C 01 00 00 BF 80 3D ? ? ? ? 00 75 21 8B 0D ? ? ? ? 85 C9 74 0E");
-            uint8_t* pSkipPressAnyKey = keyPattern.empty() ? nullptr : *keyPattern.get_first<uint8_t*>(9);
+            uint8_t* pSkipPressAnyKey = *keyPattern.get_first<uint8_t*>(9);
 
-            if (pNoLogos == nullptr && pSkipPressAnyKey == nullptr)
-                return;
 
             // Whatever the command line already decided, so turning the setting off gives the game
             // back the state it would have had.
-            static const auto nNoLogosDefault = pNoLogos != nullptr ? *pNoLogos : uint8_t(0);
-            static const auto nSkipPressAnyKeyDefault = pSkipPressAnyKey != nullptr ? *pSkipPressAnyKey : uint8_t(0);
+            static const auto nNoLogosDefault = *pNoLogos;
+            static const auto nSkipPressAnyKeyDefault = *pSkipPressAnyKey;
 
             static auto SkipIntroCB = [pNoLogos, pSkipPressAnyKey]()
             {
-                if (pNoLogos != nullptr)
-                {
-                    const auto nValue = FusionFixSettings.GetInt(PREF_SKIPINTRO) ? uint8_t(1) : nNoLogosDefault;
-                    injector::WriteMemory<uint8_t>(pNoLogos, nValue, true);
-                }
-
-                if (pSkipPressAnyKey != nullptr)
-                {
-                    const auto nValue = FusionFixSettings.GetInt(PREF_SKIPPRESSANYKEY) ? uint8_t(1) : nSkipPressAnyKeyDefault;
-                    injector::WriteMemory<uint8_t>(pSkipPressAnyKey, nValue, true);
-                }
+                const auto nIntro = FusionFixSettings.GetInt(PREF_SKIPINTRO) ? uint8_t(1) : nNoLogosDefault;
+                const auto nKey = FusionFixSettings.GetInt(PREF_SKIPPRESSANYKEY) ? uint8_t(1) : nSkipPressAnyKeyDefault;
+                injector::WriteMemory<uint8_t>(pNoLogos, nIntro, true);
+                injector::WriteMemory<uint8_t>(pSkipPressAnyKey, nKey, true);
             };
 
             SkipIntroCB();
 
             // The flags are read at startup, so a change made mid-session lands on the next launch.
-            // Written anyway, because the ini is the state the next launch reads.
-            FusionFix::onIniFileChange() += []()
+            FusionFix::onSettingsChange() += []()
             {
                 SkipIntroCB();
             };

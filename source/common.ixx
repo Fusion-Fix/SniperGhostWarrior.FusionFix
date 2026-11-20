@@ -49,14 +49,6 @@ public:
         static Event<> InitEvent;
         return InitEvent;
     }
-    // Modal prompts that have to be answered before the game is allowed to carry on loading.
-    // Runs on the main thread ahead of onInitEvent, so executeAll does not return until every
-    // prompt is closed.
-    static Event<>& onStartupPromptEvent()
-    {
-        static Event<> StartupPromptEvent;
-        return StartupPromptEvent;
-    }
     // Fires once engine_x86.dll is mapped. The renderer, the window and the video settings live
     // there.
     static Event<>& onEngineInitEvent()
@@ -71,10 +63,10 @@ public:
         static Event<> GameDLLInitEvent;
         return GameDLLInitEvent;
     }
-    static Event<>& onIniFileChange()
+    static Event<>& onSettingsChange()
     {
-        static Event<> IniFileChange;
-        return IniFileChange;
+        static Event<> SettingsChange;
+        return SettingsChange;
     }
     static Event<>& onShutdownEvent()
     {

@@ -26,8 +26,6 @@ public:
         {
             // ADD ESI,1 / ADD EDI,10 / CMP ESI,4 / JC - the subtype table scan loop.
             auto pattern = engine_pattern("83 C6 01 83 C7 10 83 FE 04 72 E8");
-            if (pattern.empty())
-                return;
 
             injector::WriteMemory<uint8_t>(pattern.get_first(8), 3, true);
         };

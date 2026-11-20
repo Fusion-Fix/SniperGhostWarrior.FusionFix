@@ -24,8 +24,6 @@ public:
         FusionFix::onEngineInitEvent() += []()
         {
             auto pattern = engine_pattern("83 EC 08 53 55 8B 2D ? ? ? ? 83 7D 0C 00 56 57 8B F8");
-            if (pattern.empty())
-                return;
 
             static auto ShadowMapSizeCB = []()
             {
@@ -45,7 +43,7 @@ public:
 
             // The maps are only rebuilt when the video settings are applied, so a change lands on
             // the next mode change rather than immediately.
-            FusionFix::onIniFileChange() += []()
+            FusionFix::onSettingsChange() += []()
             {
                 ShadowMapSizeCB();
             };
