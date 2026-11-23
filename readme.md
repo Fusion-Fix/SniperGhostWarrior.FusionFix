@@ -7,7 +7,7 @@
 
 1. Download the latest release from the [Releases](https://github.com/Fusion-Fix/SniperGhostWarrior.FusionFix/releases/latest) page.
 2. Extract the archive into the game root directory.
-3. Launch the game. Settings are saved in plugins/SniperGhostWarrior.FusionFix.cfg and can be edited with FusionFixHub.
+3. Launch the game. Settings are saved in plugins/SniperGhostWarrior.FusionFix.cfg and can be edited with FusionFixHub, which comes with the downloads on [fusionfix.io](https://fusionfix.io).
 
 ## Features
 

@@ -1,6 +1,5 @@
 param(
-    [string]$Loader = (Join-Path $PSScriptRoot 'data/winmm.dll'),
-    [string]$Hub = (Join-Path $PSScriptRoot 'FusionFixHub.exe')
+    [string]$Loader = (Join-Path $PSScriptRoot 'data/winmm.dll')
 )
 $ErrorActionPreference = 'Stop'
 $plugin = Join-Path $PSScriptRoot 'bin/Release/SniperGhostWarrior.FusionFix.asi'
@@ -12,7 +11,6 @@ try {
     New-Item -ItemType Directory -Force -Path (Join-Path $staging 'plugins') | Out-Null
     Copy-Item -LiteralPath $plugin -Destination (Join-Path $staging 'plugins')
     Copy-Item -LiteralPath $Loader -Destination (Join-Path $staging 'winmm.dll')
-    if (Test-Path -LiteralPath $Hub -PathType Leaf) { Copy-Item -LiteralPath $Hub -Destination $staging }
     $output = Join-Path $PSScriptRoot 'SniperGhostWarrior.FusionFix.zip'
     if (Test-Path -LiteralPath $output) { Remove-Item -LiteralPath $output }
     Add-Type -AssemblyName System.IO.Compression.FileSystem
